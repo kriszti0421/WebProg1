@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 API-k</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="html5.js" defer></script>
+  </head>
+  <body>
+
+    <header>
+	  <h1>Web-programozás-1 Előadás Feladat</h1>
+    </header>
+
+    <nav>
+	  <ul>
+		<li><a href="index.html">Főoldal</a></li>
+		<li><a href="tabla.html">Táblázat</a></li>
+		<li><a href="html5.html" class="active">HTML5</a></li>
+		<li><a href="chartjs.html">ChartJS</a></li>
+		<li><a href="ajax.html">AJAX</a></li>
+		<li><a href="oojs.html">OOJS</a></li>
+	  </ul>
+    </nav>
+
+    <div class="content">
+	  <h2>HTML5 API-k példái</h2>
+
+	  <section id="web-storage">
+		<h3>Web Storage</h3>
+		<input type="text" id="storageInput" placeholder="Írj be valamit...">
+		<button onclick="saveToLocalStorage()">Mentés</button>
+		<button onclick="loadFromLocalStorage()">Betöltés</button>
+		<p id="storageOutput"></p>
+	  </section>
+
+	  <section id="geolocation">
+		<h3>Geolocation API</h3>
+		<button onclick="getLocation()">Helyzet lekérése</button>
+		<p id="locationOutput"></p>
+	  </section>
+
+	  <section id="drag-drop">
+		<h3>Drag & Drop API</h3>
+		<div id="dragBox" draggable="true" ondragstart="drag(event)">Húzz engem!</div>
+		<div id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)">Dobd ide!</div>
+	  </section>
+
+	  <section id="canvas">
+		<h3>Canvas</h3>
+		<canvas id="myCanvas" width="300" height="150"></canvas>
+		<button onclick="drawOnCanvas()">Rajzolás</button>
+	  </section>
+
+	  <section id="svg">
+		<h3>SVG</h3>
+		<svg width="200" height="100">
+		  <rect width="200" height="100" style="fill:blue;"></rect>
+		</svg>
+	  </section>
+
+    </div>
+
+    <footer>
+	  <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
+    </footer>
+
+  </body>
+</html>

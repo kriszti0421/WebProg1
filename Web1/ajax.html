@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX és API</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="ajax.js" defer></script>
+  </head>
+  <body>
+
+    <header>
+	  <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+	  <ul>
+		<li><a href="index.html">Főoldal</a></li>
+		<li><a href="tabla.html">Táblázat</a></li>
+		<li><a href="html5.html">HTML5</a></li>
+		<li><a href="chartjs.html">ChartJS</a></li>
+		<li><a href="ajax.html" class="active">AJAX</a></li>
+		<li><a href="oojs.html">OOJS</a></li>
+	  </ul>
+    </nav>
+
+    <div class="content">
+	  <h2>AJAX CRUD műveletek</h2>
+
+	  <button onclick="fetchData()">Adatok betöltése</button>
+	  <ul id="dataList"></ul>
+
+	  <h3>Új adat létrehozása</h3>
+	  <input type="text" id="newData" placeholder="Új adat">
+	  <button onclick="createData()">Létrehozás</button>
+
+	  <h3>Adat frissítése</h3>
+	  <input type="text" id="updateId" placeholder="ID">
+	  <input type="text" id="updateValue" placeholder="Új érték">
+	  <button onclick="updateData()">Frissítés</button>
+
+	  <h3>Adat törlése</h3>
+	  <input type="text" id="deleteId" placeholder="ID">
+	  <button onclick="deleteData()">Törlés</button>
+    </div>
+
+    <footer>
+	  <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
+    </footer>
+
+  </body>
+</html>
