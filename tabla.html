@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Táblázat CRUD</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+
+    <header>
+	  <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+	  <ul>
+		<li><a href="index.html">Főoldal</a></li>
+		<li><a href="tabla.html" class="active">Táblázat</a></li>
+		<li><a href="html5.html">HTML5</a></li>
+		<li><a href="chartjs.html">ChartJS</a></li>
+		<li><a href="ajax.html">AJAX</a></li>
+		<li><a href="oojs.html">OOJS</a></li>
+	  </ul>
+    </nav>
+
+    <div class="content">
+	  <h2>Táblázatos CRUD-funkció</h2>
+
+	  <!-- Keresőmező -->
+	  <input type="text" id="search" placeholder="Keresés..." onkeyup="searchTable()">
+
+	  <!-- Táblázat -->
+	  <table id="crudTable">
+		<thead>
+		  <tr>
+			<th onclick="sortTable(0)">Név</th>
+			<th onclick="sortTable(1)">Kor</th>
+			<th onclick="sortTable(2)">Város</th>
+			<th onclick="sortTable(3)">E-mail</th>
+			<th>Műveletek</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+			<td>József</td>
+			<td>25</td>
+			<td>Budapest</td>
+			<td>jozsef@example.com</td>
+			<td>
+			  <button onclick="editRow(this)">Szerkeszt</button>
+			  <button onclick="deleteRow(this)">Töröl</button>
+			</td>
+		  </tr>
+		</tbody>
+	  </table>
+
+	  <!-- Új sor hozzáadása -->
+	  <h3>Új adat hozzáadása</h3>
+	  <input type="text" id="name" placeholder="Név" required>
+	  <input type="number" id="age" placeholder="Kor" min="1" max="99" required>
+	  <input type="text" id="city" placeholder="Város" required>
+	  <input type="email" id="email" placeholder="E-mail" required>
+	  <button onclick="addRow()">Hozzáadás</button>
+    </div>
+
+    <footer>
+	  <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
+    </footer>
+
+  </body>
+</html>
