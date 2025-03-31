@@ -33,10 +33,10 @@ function getLocation() {
 // Web Workers
 var worker;
 function startWorker() {
-    if (typeof Worker !== "undefined") {
+    if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
-        worker.onmessage = function (event) {
-            document.getElementById("workerOutput").innerText += event.data + "... ";
+        worker.onmessage = function(event) {
+            document.getElementById("workerOutput").innerText = event.data;
         };
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
@@ -47,16 +47,15 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
-        document.getElementById("workerOutput").innerText += "Leállítva.";
     }
 }
 
 // Server-Sent Events (SSE)
 function connectSSE() {
-    if (typeof EventSource !== "undefined") {
+    if (typeof(EventSource) !== "undefined") {
         var source = new EventSource("server.php");
-        source.onmessage = function (event) {
-            document.getElementById("sseOutput").innerText += event.data + "\n";
+        source.onmessage = function(event) {
+            document.getElementById("sseOutput").innerText = event.data;
         };
     } else {
         alert("A böngésződ nem támogatja az SSE-t!");
@@ -86,10 +85,14 @@ function drawOnCanvas() {
     ctx.fillStyle = "red";
     ctx.fillRect(50, 50, 100, 50);
     ctx.beginPath();
-    ctx.arc(150, 75, 30, 0, 2 * Math.PI);
+    ctx.arc(150, 75, 40, 0, 2 * Math.PI);
     ctx.fillStyle = "blue";
     ctx.fill();
-    ctx.fillStyle = "black";
-    ctx.font = "16px Arial";
-    ctx.fillText("Hello!", 100, 30);
+}
+
+// SVG átméretezés
+function resizeSVG() {
+    var svgElement = document.querySelector("svg rect");
+    svgElement.setAttribute("width", "150");
+    svgElement.setAttribute("height", "80");
 }
