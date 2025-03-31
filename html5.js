@@ -32,15 +32,12 @@ function getLocation() {
 
 // Web Workers
 var worker;
-var count = 0;
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
         worker.onmessage = function(event) {
-            count = event.data;
-            document.getElementById("workerOutput").innerText = "Számolás: " + count;
+            document.getElementById("workerOutput").innerText = "Számolás: " + event.data;
         };
-        worker.postMessage("start");
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
     }
@@ -50,6 +47,7 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
+        document.getElementById("workerOutput").innerText = "Számolás: 0";
     }
 }
 
@@ -58,7 +56,7 @@ function connectSSE() {
     if (typeof(EventSource) !== "undefined") {
         var source = new EventSource("server.php");
         source.onmessage = function(event) {
-            document.getElementById("sseOutput").innerText = "SSE üzenet: " + event.data;
+            document.getElementById("sseOutput").innerText = event.data;
         };
     } else {
         alert("A böngésződ nem támogatja az SSE-t!");
@@ -77,7 +75,10 @@ function drag(event) {
 function drop(event) {
     event.preventDefault();
     var data = event.dataTransfer.getData("text");
-    event.target.appendChild(document.getElementById(data));
+    var draggedElement = document.getElementById(data);
+    if (event.target.id === "dropZone") {
+        event.target.appendChild(draggedElement);
+    }
 }
 
 // Canvas rajzolás
@@ -91,7 +92,8 @@ function drawOnCanvas() {
     ctx.arc(150, 75, 40, 0, 2 * Math.PI);
     ctx.fillStyle = "blue";
     ctx.fill();
-    ctx.font = "30px Arial";
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "black";
     ctx.fillText("Rajzolás kész!", 50, 150);
 }
 
