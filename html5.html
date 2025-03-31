@@ -56,11 +56,11 @@
 
       <section id="drag-drop">
         <h3>Drag & Drop API</h3>
-        <div id="dragItems">
+        <div id="dragItems" class="drag-container">
           <div class="dragItem" draggable="true" ondragstart="drag(event)" id="drag1">Elem 1</div>
           <div class="dragItem" draggable="true" ondragstart="drag(event)" id="drag2">Elem 2</div>
         </div>
-        <div id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)">Dobd ide!</div>
+        <div id="dropZone" class="drop-zone" ondragover="allowDrop(event)" ondrop="drop(event)">Dobd ide!</div>
       </section>
 
       <div style="height: 100px;"></div> <!-- Extra hely kihagyás -->
