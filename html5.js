@@ -32,13 +32,13 @@ function getLocation() {
 
 // Web Workers
 var worker;
-
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
         worker.onmessage = function(event) {
             document.getElementById("workerOutput").innerText = event.data;
         };
+        worker.postMessage("Start");
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
     }
@@ -48,6 +48,7 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
+        document.getElementById("workerOutput").innerText = "Worker leállítva.";
     }
 }
 
@@ -75,7 +76,10 @@ function drag(event) {
 function drop(event) {
     event.preventDefault();
     var data = event.dataTransfer.getData("text");
-    event.target.appendChild(document.getElementById(data));
+    var draggedElement = document.getElementById(data);
+    if (event.target.id === "dropZone") {
+        event.target.appendChild(draggedElement);
+    }
 }
 
 // Canvas rajzolás
