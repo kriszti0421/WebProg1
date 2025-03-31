@@ -1,20 +1,22 @@
 var apiUrl = "https://jsonplaceholder.typicode.com/users"; // Teszt API URL
+var localData = []; // Kliensoldali adatkezelés
 
 // Adatok betöltése
 function fetchData() {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            updateTable(data);
+            localData = data.map(user => ({ id: user.id, name: user.name, height: Math.floor(Math.random() * 50) + 150 })); // Magasság generálás
+            updateTable();
         })
         .catch(error => console.error("Hiba történt az adatok betöltésekor:", error));
 }
 
 // Táblázat frissítése
-function updateTable(data) {
+function updateTable() {
     var tableBody = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
     tableBody.innerHTML = ""; // Táblázat kiürítése
-    data.forEach(user => {
+    localData.forEach(user => {
         var row = document.createElement("tr");
 
         var idCell = document.createElement("td");
@@ -26,7 +28,7 @@ function updateTable(data) {
         row.appendChild(nameCell);
 
         var heightCell = document.createElement("td");
-        heightCell.innerText = user.height || "N/A"; // JSONPlaceholder nem tartalmaz height-et
+        heightCell.innerText = user.height;
         row.appendChild(heightCell);
 
         tableBody.appendChild(row);
@@ -39,17 +41,10 @@ function createData() {
     var height = document.getElementById("newHeight").value.trim();
     if (!validateInput(name, height)) return;
 
-    fetch(apiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name, height: parseInt(height, 10) })
-    })
-    .then(response => response.json())
-    .then(data => {
-        alert("Új adat sikeresen létrehozva!");
-        fetchData(); // Táblázat frissítése
-    })
-    .catch(error => console.error("Hiba történt az adat létrehozásakor:", error));
+    var newUser = { id: localData.length + 1, name: name, height: parseInt(height, 10) };
+    localData.push(newUser);
+    updateTable();
+    alert("Új adat sikeresen létrehozva!");
 }
 
 // Adat frissítése
@@ -62,17 +57,15 @@ function updateData() {
         return;
     }
 
-    fetch(apiUrl + "/" + id, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name, height: parseInt(height, 10) })
-    })
-    .then(response => response.json())
-    .then(data => {
+    var user = localData.find(u => u.id == id);
+    if (user) {
+        user.name = name;
+        user.height = parseInt(height, 10);
+        updateTable();
         alert("Adat sikeresen frissítve!");
-        fetchData(); // Táblázat frissítése
-    })
-    .catch(error => console.error("Hiba történt az adat frissítésekor:", error));
+    } else {
+        alert("Nem található ilyen ID-jű adat.");
+    }
 }
 
 // Adat törlése
@@ -83,18 +76,14 @@ function deleteData() {
         return;
     }
 
-    fetch(apiUrl + "/" + id, {
-        method: "DELETE"
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Adat sikeresen törölve!");
-            fetchData(); // Táblázat frissítése
-        } else {
-            alert("Hiba történt az adat törlésekor.");
-        }
-    })
-    .catch(error => console.error("Hiba történt az adat törlésekor:", error));
+    var index = localData.findIndex(u => u.id == id);
+    if (index !== -1) {
+        localData.splice(index, 1);
+        updateTable();
+        alert("Adat sikeresen törölve!");
+    } else {
+        alert("Nem található ilyen ID-jű adat.");
+    }
 }
 
 // Input validáció
@@ -109,3 +98,4 @@ function validateInput(name, height) {
     }
     return true;
 }
+
