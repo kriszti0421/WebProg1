@@ -32,11 +32,10 @@ function getLocation() {
 
 // Web Workers
 var worker;
-
 function startWorker() {
-    if (typeof(Worker) !== "undefined") {
+    if (typeof Worker !== "undefined") {
         worker = new Worker("worker.js");
-        worker.onmessage = function(event) {
+        worker.onmessage = function (event) {
             document.getElementById("workerOutput").innerText += event.data + "... ";
         };
     } else {
@@ -48,14 +47,15 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
+        document.getElementById("workerOutput").innerText += "Leállítva.";
     }
 }
 
 // Server-Sent Events (SSE)
 function connectSSE() {
-    if (typeof(EventSource) !== "undefined") {
+    if (typeof EventSource !== "undefined") {
         var source = new EventSource("server.php");
-        source.onmessage = function(event) {
+        source.onmessage = function (event) {
             document.getElementById("sseOutput").innerText += event.data + "\n";
         };
     } else {
@@ -83,16 +83,13 @@ function drawOnCanvas() {
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     ctx.fillStyle = "red";
     ctx.fillRect(50, 50, 100, 50);
-
-    ctx.fillStyle = "blue";
     ctx.beginPath();
-    ctx.arc(150, 100, 30, 0, 2 * Math.PI);
+    ctx.arc(150, 75, 30, 0, 2 * Math.PI);
+    ctx.fillStyle = "blue";
     ctx.fill();
-
     ctx.fillStyle = "black";
-    ctx.font = "20px Arial";
-    ctx.fillText("Rajzolás kész!", 60, 140);
+    ctx.font = "16px Arial";
+    ctx.fillText("Hello!", 100, 30);
 }
