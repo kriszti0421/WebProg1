@@ -1,4 +1,4 @@
-// LocalStorage mentés és betöltés
+// Web Storage
 function saveToStorage() {
     var input = document.getElementById("storageInput").value;
     localStorage.setItem("storedText", input);
@@ -10,7 +10,7 @@ function loadFromStorage() {
     output.innerText = localStorage.getItem("storedText") || "Nincs adat!";
 }
 
-// Geolocation lekérése
+// Geolocation API
 function getLocation() {
     var locationOutput = document.getElementById("locationOutput");
 
@@ -32,13 +32,13 @@ function getLocation() {
 
 // Web Workers
 var worker;
+
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
         worker.onmessage = function(event) {
             document.getElementById("workerOutput").innerText = event.data;
         };
-        worker.postMessage("Start");
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
     }
@@ -48,7 +48,6 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
-        document.getElementById("workerOutput").innerText = "Worker leállítva.";
     }
 }
 
@@ -76,9 +75,12 @@ function drag(event) {
 function drop(event) {
     event.preventDefault();
     var data = event.dataTransfer.getData("text");
-    var draggedElement = document.getElementById(data);
-    if (event.target.id === "dropZone") {
-        event.target.appendChild(draggedElement);
+    var target = event.target;
+
+    if (target.id === "dropZone") {
+        target.appendChild(document.getElementById(data));
+    } else {
+        alert("Csak a kijelölt területre lehet dobni!");
     }
 }
 
