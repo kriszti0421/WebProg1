@@ -1,89 +1,94 @@
-var apiUrl = "https://jsonplaceholder.typicode.com/users"; // Teszt API URL
-var localData = []; // Kliensoldali adatkezelés
+var localData = []; // Lokális adatokat tároló tömb
 
 // Adatok betöltése
 function fetchData() {
-    fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            localData = data.map(user => ({ id: user.id, name: user.name, height: Math.floor(Math.random() * 50) + 150 })); // Magasság generálás
-            updateTable();
-        })
-        .catch(error => console.error("Hiba történt az adatok betöltésekor:", error));
+    updateTable();
 }
 
 // Táblázat frissítése
 function updateTable() {
     var tableBody = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
     tableBody.innerHTML = ""; // Táblázat kiürítése
-    localData.forEach(user => {
+
+    localData.forEach((item) => {
         var row = document.createElement("tr");
 
         var idCell = document.createElement("td");
-        idCell.innerText = user.id;
+        idCell.innerText = item.id;
         row.appendChild(idCell);
 
         var nameCell = document.createElement("td");
-        nameCell.innerText = user.name;
+        nameCell.innerText = item.name;
         row.appendChild(nameCell);
 
         var heightCell = document.createElement("td");
-        heightCell.innerText = user.height;
+        heightCell.innerText = item.height;
         row.appendChild(heightCell);
 
         tableBody.appendChild(row);
     });
+
+    updateStatistics(); // Frissíti a statisztikákat
 }
 
 // Új adat létrehozása
 function createData() {
     var name = document.getElementById("newName").value.trim();
     var height = document.getElementById("newHeight").value.trim();
+    
     if (!validateInput(name, height)) return;
 
-    var newUser = { id: localData.length + 1, name: name, height: parseInt(height, 10) };
+    var newId = localData.length > 0 ? localData[localData.length - 1].id + 1 : 1;
+    var newUser = { id: newId, name: name, height: parseInt(height, 10) };
+
     localData.push(newUser);
     updateTable();
+
+    document.getElementById("newName").value = "";
+    document.getElementById("newHeight").value = "";
+
     alert("Új adat sikeresen létrehozva!");
 }
 
 // Adat frissítése
 function updateData() {
-    var id = document.getElementById("updateId").value.trim();
+    var id = parseInt(document.getElementById("updateId").value.trim(), 10);
     var name = document.getElementById("updateName").value.trim();
     var height = document.getElementById("updateHeight").value.trim();
-    if (!validateInput(name, height) || !id) {
-        alert("Minden mezőt ki kell tölteni!");
+
+    if (!id || !validateInput(name, height)) return;
+
+    var user = localData.find(item => item.id === id);
+    if (!user) {
+        alert("Nincs ilyen ID-jű adat!");
         return;
     }
 
-    var user = localData.find(u => u.id == id);
-    if (user) {
-        user.name = name;
-        user.height = parseInt(height, 10);
-        updateTable();
-        alert("Adat sikeresen frissítve!");
-    } else {
-        alert("Nem található ilyen ID-jű adat.");
-    }
+    user.name = name;
+    user.height = parseInt(height, 10);
+    updateTable();
+
+    alert("Adat sikeresen frissítve!");
 }
 
 // Adat törlése
 function deleteData() {
-    var id = document.getElementById("deleteId").value.trim();
+    var id = parseInt(document.getElementById("deleteId").value.trim(), 10);
     if (!id) {
         alert("Az ID mező nem lehet üres!");
         return;
     }
 
-    var index = localData.findIndex(u => u.id == id);
-    if (index !== -1) {
-        localData.splice(index, 1);
-        updateTable();
-        alert("Adat sikeresen törölve!");
-    } else {
-        alert("Nem található ilyen ID-jű adat.");
+    var index = localData.findIndex(item => item.id === id);
+    if (index === -1) {
+        alert("Nincs ilyen ID-jű adat!");
+        return;
     }
+
+    localData.splice(index, 1);
+    updateTable();
+
+    alert("Adat sikeresen törölve!");
 }
 
 // Input validáció
@@ -99,3 +104,15 @@ function validateInput(name, height) {
     return true;
 }
 
+// Statisztikák frissítése
+function updateStatistics() {
+    var heights = localData.map(item => item.height);
+
+    var sum = heights.reduce((acc, val) => acc + val, 0);
+    var average = heights.length > 0 ? (sum / heights.length) : 0;
+    var max = heights.length > 0 ? Math.max(...heights) : 0;
+
+    document.getElementById("sum").innerText = sum;
+    document.getElementById("average").innerText = average.toFixed(2);
+    document.getElementById("max").innerText = max;
+}
