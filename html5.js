@@ -32,11 +32,13 @@ function getLocation() {
 
 // Web Workers
 var worker;
+var count = 0;
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
         worker.onmessage = function(event) {
-            document.getElementById("workerOutput").innerText = "Számolás: " + event.data;
+            count = event.data;
+            document.getElementById("workerOutput").innerText = "Számolás: " + count;
         };
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
@@ -47,7 +49,6 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
-        document.getElementById("workerOutput").innerText = "Számolás: 0";
     }
 }
 
@@ -63,10 +64,9 @@ function connectSSE() {
     }
 }
 
-// Drag & Drop API vizuális frissítéssel
+// Drag & Drop API
 function allowDrop(event) {
     event.preventDefault();
-    event.target.classList.add("hovered");
 }
 
 function drag(event) {
@@ -75,15 +75,11 @@ function drag(event) {
 
 function drop(event) {
     event.preventDefault();
-    event.target.classList.remove("hovered");
     var data = event.dataTransfer.getData("text");
-    var draggedElement = document.getElementById(data);
-    event.target.appendChild(draggedElement);
-    draggedElement.style.backgroundColor = "lightgreen"; // Sikeres dobás után színváltozás
-}
-
-function dragLeave(event) {
-    event.target.classList.remove("hovered");
+    var droppedElement = document.getElementById(data);
+    droppedElement.style.backgroundColor = "lightgreen";
+    droppedElement.innerText = "✅ " + droppedElement.innerText;
+    event.target.appendChild(droppedElement);
 }
 
 // Canvas rajzolás
@@ -91,11 +87,21 @@ function drawOnCanvas() {
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
     ctx.fillStyle = "red";
     ctx.fillRect(50, 50, 100, 50);
+    
     ctx.beginPath();
     ctx.arc(150, 75, 40, 0, 2 * Math.PI);
     ctx.fillStyle = "blue";
+    ctx.fill();
+    
+    ctx.beginPath();
+    ctx.moveTo(200, 50);
+    ctx.lineTo(250, 100);
+    ctx.lineTo(150, 100);
+    ctx.closePath();
+    ctx.fillStyle = "green";
     ctx.fill();
 }
 
