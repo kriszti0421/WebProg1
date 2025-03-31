@@ -36,8 +36,9 @@ var worker;
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
+        document.getElementById("workerOutput").innerText = "Számolás indult...";
         worker.onmessage = function(event) {
-            document.getElementById("workerOutput").innerText = event.data;
+            document.getElementById("workerOutput").innerText = "Eredmény: " + event.data;
         };
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
@@ -48,6 +49,7 @@ function stopWorker() {
     if (worker) {
         worker.terminate();
         worker = undefined;
+        document.getElementById("workerOutput").innerText = "Worker leállítva!";
     }
 }
 
@@ -55,8 +57,11 @@ function stopWorker() {
 function connectSSE() {
     if (typeof(EventSource) !== "undefined") {
         var source = new EventSource("server.php");
+        document.getElementById("sseOutput").innerText = "Kapcsolódás...";
         source.onmessage = function(event) {
-            document.getElementById("sseOutput").innerText = event.data;
+            document.getElementById("sseOutput").innerHTML = `<div style="padding:10px; background:#eee; margin-top:10px;">
+                <b>Új adat:</b> ${event.data} <br> <small>${new Date().toLocaleTimeString()}</small>
+            </div>`;
         };
     } else {
         alert("A böngésződ nem támogatja az SSE-t!");
@@ -79,6 +84,7 @@ function drop(event) {
 
     if (target.id === "dropZone") {
         target.appendChild(document.getElementById(data));
+        target.style.background = "#d4edda";  // Zöld háttér sikeres dobáskor
     } else {
         alert("Csak a kijelölt területre lehet dobni!");
     }
@@ -88,6 +94,22 @@ function drop(event) {
 function drawOnCanvas() {
     var canvas = document.getElementById("myCanvas");
     var ctx = canvas.getContext("2d");
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Törlés
+
     ctx.fillStyle = "red";
-    ctx.fillRect(50, 50, 100, 50);
+    ctx.fillRect(50, 50, 100, 50); // Piros négyzet
+
+    ctx.beginPath();
+    ctx.arc(200, 75, 30, 0, 2 * Math.PI); // Piros kör
+    ctx.fillStyle = "blue";
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(10, 10);
+    ctx.lineTo(250, 100);
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.stroke();
 }
