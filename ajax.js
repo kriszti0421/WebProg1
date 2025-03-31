@@ -1,4 +1,4 @@
-var apiUrl = "https://api.example.com/data"; // Az API URL
+var apiUrl = "https://github.com/MolnarMateK/WebProg1/blob/main/ajax.js"; // Az API URL
 
 // Adatok betöltése
 function fetchData() {
