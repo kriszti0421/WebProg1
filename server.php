@@ -1,8 +1,15 @@
 <?php
 header('Content-Type: text/event-stream');
 header('Cache-Control: no-cache');
+header('Connection: keep-alive');
 
-echo "data: " . date("H:i:s") . "\n\n";
-flush();
-sleep(1);
+while (true) {
+    $data = date("H:i:s"); // Jelenlegi idő elküldése
+
+    echo "data: {$data}\n\n";
+    ob_flush();
+    flush();
+    
+    sleep(1); // 1 másodpercenként küld adatot
+}
 ?>
