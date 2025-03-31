@@ -32,12 +32,15 @@ function getLocation() {
 
 // Web Workers
 var worker;
+var count = 0;
 function startWorker() {
     if (typeof(Worker) !== "undefined") {
         worker = new Worker("worker.js");
         worker.onmessage = function(event) {
-            document.getElementById("workerOutput").innerText = event.data;
+            count = event.data;
+            document.getElementById("workerOutput").innerText = "Számolás: " + count;
         };
+        worker.postMessage("start");
     } else {
         alert("A böngésződ nem támogatja a Web Workers API-t!");
     }
@@ -55,7 +58,7 @@ function connectSSE() {
     if (typeof(EventSource) !== "undefined") {
         var source = new EventSource("server.php");
         source.onmessage = function(event) {
-            document.getElementById("sseOutput").innerText = event.data;
+            document.getElementById("sseOutput").innerText = "SSE üzenet: " + event.data;
         };
     } else {
         alert("A böngésződ nem támogatja az SSE-t!");
@@ -88,6 +91,8 @@ function drawOnCanvas() {
     ctx.arc(150, 75, 40, 0, 2 * Math.PI);
     ctx.fillStyle = "blue";
     ctx.fill();
+    ctx.font = "30px Arial";
+    ctx.fillText("Rajzolás kész!", 50, 150);
 }
 
 // SVG átméretezés
