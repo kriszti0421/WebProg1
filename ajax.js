@@ -1,118 +1,106 @@
-var localData = []; // Lokális adatokat tároló tömb
+// CRUD API URL
+const API_URL = 'http://localhost:3000/api/data';
 
-// Adatok betöltése
-function fetchData() {
-    updateTable();
+// Betölti az adatokat és megjeleníti a táblázatban
+async function loadData() {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    
+    let tableBody = document.getElementById("dataTableBody");
+    tableBody.innerHTML = "";
+    data.forEach(item => {
+        let row = `<tr>
+            <td>${item.id}</td>
+            <td>${item.name}</td>
+            <td>${item.height}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+    });
+    
+    calculateHeightStats(data);
 }
 
-// Táblázat frissítése
-function updateTable() {
-    var tableBody = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
-    tableBody.innerHTML = ""; // Táblázat kiürítése
-
-    localData.forEach((item) => {
-        var row = document.createElement("tr");
-
-        var idCell = document.createElement("td");
-        idCell.innerText = item.id;
-        row.appendChild(idCell);
-
-        var nameCell = document.createElement("td");
-        nameCell.innerText = item.name;
-        row.appendChild(nameCell);
-
-        var heightCell = document.createElement("td");
-        heightCell.innerText = item.height;
-        row.appendChild(heightCell);
-
-        tableBody.appendChild(row);
-    });
-
-    updateStatistics(); // Frissíti a statisztikákat
+// Magasság összeg, átlag, maximum számítása
+function calculateHeightStats(data) {
+    if (data.length === 0) return;
+    
+    let sum = data.reduce((acc, item) => acc + item.height, 0);
+    let avg = sum / data.length;
+    let max = Math.max(...data.map(item => item.height));
+    
+    document.getElementById("heightSum").textContent = `Összeg: ${sum}`;
+    document.getElementById("heightAvg").textContent = `Átlag: ${avg.toFixed(2)}`;
+    document.getElementById("heightMax").textContent = `Max: ${max}`;
 }
 
 // Új adat létrehozása
-function createData() {
-    var name = document.getElementById("newName").value.trim();
-    var height = document.getElementById("newHeight").value.trim();
+async function createData() {
+    let name = document.getElementById("newName").value;
+    let height = parseInt(document.getElementById("newHeight").value);
     
     if (!validateInput(name, height)) return;
-
-    var newId = localData.length > 0 ? localData[localData.length - 1].id + 1 : 1;
-    var newUser = { id: newId, name: name, height: parseInt(height, 10) };
-
-    localData.push(newUser);
-    updateTable();
-
-    document.getElementById("newName").value = "";
-    document.getElementById("newHeight").value = "";
-
-    alert("Új adat sikeresen létrehozva!");
+    
+    await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, height })
+    });
+    
+    loadData();
 }
 
-// Adat frissítése
-function updateData() {
-    var id = parseInt(document.getElementById("updateId").value.trim(), 10);
-    var name = document.getElementById("updateName").value.trim();
-    var height = document.getElementById("updateHeight").value.trim();
-
-    if (!id || !validateInput(name, height)) return;
-
-    var user = localData.find(item => item.id === id);
-    if (!user) {
-        alert("Nincs ilyen ID-jű adat!");
-        return;
-    }
-
-    user.name = name;
-    user.height = parseInt(height, 10);
-    updateTable();
-
-    alert("Adat sikeresen frissítve!");
+// Adat módosítása
+async function updateData() {
+    let id = document.getElementById("updateId").value;
+    let name = document.getElementById("newName").value;
+    let height = parseInt(document.getElementById("newHeight").value);
+    
+    if (!validateInput(name, height)) return;
+    
+    await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, height })
+    });
+    
+    loadData();
 }
 
 // Adat törlése
-function deleteData() {
-    var id = parseInt(document.getElementById("deleteId").value.trim(), 10);
-    if (!id) {
-        alert("Az ID mező nem lehet üres!");
-        return;
-    }
-
-    var index = localData.findIndex(item => item.id === id);
-    if (index === -1) {
-        alert("Nincs ilyen ID-jű adat!");
-        return;
-    }
-
-    localData.splice(index, 1);
-    updateTable();
-
-    alert("Adat sikeresen törölve!");
+async function deleteData() {
+    let id = document.getElementById("deleteId").value;
+    
+    await fetch(`${API_URL}/${id}`, {
+        method: 'DELETE'
+    });
+    
+    loadData();
 }
 
-// Input validáció
+// ID alapján betölti az adatokat a mezőkbe (Update-hez)
+function getDataForId() {
+    let id = document.getElementById("updateId").value;
+    fetch(`${API_URL}/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("newName").value = data.name;
+            document.getElementById("newHeight").value = data.height;
+        })
+        .catch(() => alert("Nincs ilyen ID!"));
+}
+
+// Bevitel ellenőrzése
 function validateInput(name, height) {
     if (!name || name.length > 30) {
-        alert("A név mező nem lehet üres és maximum 30 karakter hosszú!");
+        alert("A név nem lehet üres és maximum 30 karakter lehet!");
         return false;
     }
-    if (!height || isNaN(height)) {
-        alert("A magasság mező számot kell tartalmazzon!");
+    if (!height || isNaN(height) || height < 100 || height > 250) {
+        alert("A magasságnak számnak kell lennie (100 és 250 között)!");
         return false;
     }
     return true;
 }
 
-// Statisztikák frissítése
-function updateStatistics() {
-    var heights = localData.map(item => item.height);
-
-    var sum = heights.reduce((acc, val) => acc + val, 0);
-    var average = heights.length > 0 ? (sum / heights.length) : 0;
-    var max = heights.length > 0 ? Math.max(...heights) : 0;
-
-    document.getElementById("sum").innerText = sum;
-    document.getElementById("average").innerText = average.toFixed(2);
-    document.getElementById("max").innerText = max;
-}
+// Betöltés indításkor
+loadData();
