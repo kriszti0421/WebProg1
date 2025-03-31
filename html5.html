@@ -8,11 +8,9 @@
     <script src="html5.js" defer></script>
   </head>
   <body>
-
     <header>
       <h1>Web-programozás-1 Előadás Feladat</h1>
     </header>
-
     <nav>
       <ul>
         <li><a href="index.html">Főoldal</a></li>
@@ -23,10 +21,8 @@
         <li><a href="oojs.html">OOJS</a></li>
       </ul>
     </nav>
-
     <div class="content">
       <h2>HTML5 API-k példái</h2>
-
       <section id="web-storage">
         <h3>Web Storage</h3>
         <input type="text" id="storageInput" placeholder="Írj be valamit...">
@@ -34,56 +30,42 @@
         <button onclick="loadFromStorage()">Betöltés</button>
         <p id="storageOutput"></p>
       </section>
-
       <section id="geolocation">
         <h3>Geolocation API</h3>
         <button onclick="getLocation()">Helyzet lekérése</button>
         <p id="locationOutput"></p>
       </section>
-
       <section id="web-workers">
         <h3>Web Workers</h3>
         <button onclick="startWorker()">Indítás</button>
         <button onclick="stopWorker()">Leállítás</button>
-        <p id="workerOutput">Nincs aktív worker.</p>
+        <p id="workerOutput">Számolás: </p>
       </section>
-
       <section id="server-sent-events">
         <h3>Server-Sent Events (SSE)</h3>
         <button onclick="connectSSE()">Kapcsolódás</button>
-        <div id="sseOutput"></div>
+        <p id="sseOutput"></p>
       </section>
-
       <section id="drag-drop">
         <h3>Drag & Drop API</h3>
-        <div id="dragItems">
-          <div id="dragBox1" draggable="true" ondragstart="drag(event)" style="padding:10px; background:lightblue; margin:5px;">Elem 1</div>
-          <div id="dragBox2" draggable="true" ondragstart="drag(event)" style="padding:10px; background:lightcoral; margin:5px;">Elem 2</div>
-        </div>
-        <div id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)" style="width:200px; height:100px; border:2px dashed black; text-align:center; line-height:100px; margin-top:10px;">
-          Dobd ide!
-        </div>
+        <div id="dragBox" draggable="true" ondragstart="drag(event)">Húzz engem!</div>
+        <div id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)">Dobd ide!</div>
       </section>
-
+      <div style="height: 50px;"></div> <!-- Extra tér a Drag & Drop után -->
       <section id="canvas">
         <h3>Canvas</h3>
         <canvas id="myCanvas" width="300" height="150"></canvas>
         <button onclick="drawOnCanvas()">Rajzolás</button>
       </section>
-
       <section id="svg">
         <h3>SVG</h3>
-        <svg width="200" height="100">
-          <rect width="200" height="100" style="fill:blue;"></rect>
-          <circle cx="100" cy="50" r="30" fill="red"></circle>
-          <line x1="10" y1="10" x2="190" y2="90" stroke="white" stroke-width="2"></line>
+        <svg width="400" height="200">
+          <rect width="400" height="200" style="fill:blue;"></rect>
         </svg>
       </section>
     </div>
-
     <footer>
       <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
     </footer>
-
   </body>
 </html>
