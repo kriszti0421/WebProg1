@@ -1,90 +1,89 @@
 <!DOCTYPE html>
 <html lang="hu">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML5 API-k</title>
     <link rel="stylesheet" href="styles.css">
     <script src="html5.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
 
-<header>
-    <h1>Web-programozás-1 Előadás Feladat</h1>
-</header>
+    <header>
+      <h1>Web-programozás-1 Előadás Feladat</h1>
+    </header>
 
-<nav>
-    <ul>
+    <nav>
+      <ul>
         <li><a href="index.html">Főoldal</a></li>
         <li><a href="tabla.html">Táblázat</a></li>
         <li><a href="html5.html" class="active">HTML5</a></li>
         <li><a href="chartjs.html">ChartJS</a></li>
         <li><a href="ajax.html">AJAX</a></li>
         <li><a href="oojs.html">OOJS</a></li>
-    </ul>
-</nav>
+      </ul>
+    </nav>
 
-<div class="content">
-    <h2>HTML5 API-k példái</h2>
+    <div class="content">
+      <h2>HTML5 API-k példái</h2>
 
-    <!-- Web Storage -->
-    <section id="web-storage">
+      <section id="web-storage">
         <h3>Web Storage</h3>
         <input type="text" id="storageInput" placeholder="Írj be valamit...">
         <button onclick="saveToStorage()">Mentés</button>
         <button onclick="loadFromStorage()">Betöltés</button>
         <p id="storageOutput"></p>
-    </section>
+      </section>
 
-    <!-- Geolocation API -->
-    <section id="geolocation">
+      <section id="geolocation">
         <h3>Geolocation API</h3>
         <button onclick="getLocation()">Helyzet lekérése</button>
         <p id="locationOutput"></p>
-    </section>
+      </section>
 
-    <!-- Web Workers -->
-    <section id="web-workers">
+      <section id="web-workers">
         <h3>Web Workers</h3>
         <button onclick="startWorker()">Indítás</button>
         <button onclick="stopWorker()">Leállítás</button>
-        <p id="workerOutput"></p>
-    </section>
+        <p id="workerOutput">Nincs aktív worker.</p>
+      </section>
 
-    <!-- Server-Sent Events -->
-    <section id="server-sent-events">
+      <section id="server-sent-events">
         <h3>Server-Sent Events (SSE)</h3>
         <button onclick="connectSSE()">Kapcsolódás</button>
-        <p id="sseOutput">Nincs friss adat</p>
-    </section>
+        <div id="sseOutput"></div>
+      </section>
 
-    <!-- Drag & Drop API -->
-    <section id="drag-drop">
+      <section id="drag-drop">
         <h3>Drag & Drop API</h3>
-        <div id="dragBox" draggable="true" ondragstart="drag(event)">Húzz engem!</div>
-        <div id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)">Dobd ide!</div>
-    </section>
+        <div id="dragItems">
+          <div id="dragBox1" draggable="true" ondragstart="drag(event)" style="padding:10px; background:lightblue; margin:5px;">Elem 1</div>
+          <div id="dragBox2" draggable="true" ondragstart="drag(event)" style="padding:10px; background:lightcoral; margin:5px;">Elem 2</div>
+        </div>
+        <div id="dropZone" ondragover="allowDrop(event)" ondrop="drop(event)" style="width:200px; height:100px; border:2px dashed black; text-align:center; line-height:100px; margin-top:10px;">
+          Dobd ide!
+        </div>
+      </section>
 
-    <!-- Canvas -->
-    <section id="canvas">
+      <section id="canvas">
         <h3>Canvas</h3>
         <canvas id="myCanvas" width="300" height="150"></canvas>
         <button onclick="drawOnCanvas()">Rajzolás</button>
-    </section>
+      </section>
 
-    <!-- SVG -->
-    <section id="svg">
+      <section id="svg">
         <h3>SVG</h3>
         <svg width="200" height="100">
-            <rect width="200" height="100" style="fill:blue;"></rect>
+          <rect width="200" height="100" style="fill:blue;"></rect>
+          <circle cx="100" cy="50" r="30" fill="red"></circle>
+          <line x1="10" y1="10" x2="190" y2="90" stroke="white" stroke-width="2"></line>
         </svg>
-    </section>
+      </section>
+    </div>
 
-</div>
+    <footer>
+      <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
+    </footer>
 
-<footer>
-    <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
-</footer>
-
-</body>
+  </body>
 </html>
