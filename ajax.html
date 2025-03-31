@@ -26,7 +26,7 @@
     <div class="content">
       <h2>AJAX CRUD műveletek</h2>
 
-      <!-- Adatok megjelenítése -->
+      <!-- Adatok betöltése -->
       <button onclick="fetchData()">Adatok betöltése</button>
       <table id="dataTable" border="1">
         <thead>
@@ -58,6 +58,12 @@
       <h3>Adat törlése</h3>
       <input type="number" id="deleteId" placeholder="ID">
       <button onclick="deleteData()">Törlés</button>
+
+      <!-- Statisztikák -->
+      <h3>Statisztikák</h3>
+      <p>Összeg: <span id="sum"></span></p>
+      <p>Átlag: <span id="average"></span></p>
+      <p>Legnagyobb: <span id="max"></span></p>
     </div>
 
     <footer>
