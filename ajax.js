@@ -1,40 +1,36 @@
-var apiUrl = "https://github.com/MolnarMateK/WebProg1/blob/main/ajax.js"; // Az API URL
+var apiUrl = "https://jsonplaceholder.typicode.com/users"; // Teszt API URL
 
 // Adatok betöltése
 function fetchData() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", apiUrl, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var data = JSON.parse(xhr.responseText);
+    fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
             updateTable(data);
-            updateStatistics(data);
-        }
-    };
-    xhr.send();
+        })
+        .catch(error => console.error("Hiba történt az adatok betöltésekor:", error));
 }
 
 // Táblázat frissítése
 function updateTable(data) {
     var tableBody = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
     tableBody.innerHTML = ""; // Táblázat kiürítése
-    for (var i = 0; i < data.length; i++) {
+    data.forEach(user => {
         var row = document.createElement("tr");
 
         var idCell = document.createElement("td");
-        idCell.innerText = data[i].id;
+        idCell.innerText = user.id;
         row.appendChild(idCell);
 
         var nameCell = document.createElement("td");
-        nameCell.innerText = data[i].name;
+        nameCell.innerText = user.name;
         row.appendChild(nameCell);
 
         var heightCell = document.createElement("td");
-        heightCell.innerText = data[i].height;
+        heightCell.innerText = user.height || "N/A"; // JSONPlaceholder nem tartalmaz height-et
         row.appendChild(heightCell);
 
         tableBody.appendChild(row);
-    }
+    });
 }
 
 // Új adat létrehozása
@@ -43,16 +39,17 @@ function createData() {
     var height = document.getElementById("newHeight").value.trim();
     if (!validateInput(name, height)) return;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", apiUrl, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 201) {
-            alert("Új adat sikeresen létrehozva!");
-            fetchData(); // Táblázat frissítése
-        }
-    };
-    xhr.send(JSON.stringify({ name: name, height: parseInt(height, 10) }));
+    fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, height: parseInt(height, 10) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Új adat sikeresen létrehozva!");
+        fetchData(); // Táblázat frissítése
+    })
+    .catch(error => console.error("Hiba történt az adat létrehozásakor:", error));
 }
 
 // Adat frissítése
@@ -65,16 +62,17 @@ function updateData() {
         return;
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("PUT", apiUrl + "/" + id, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            alert("Adat sikeresen frissítve!");
-            fetchData(); // Táblázat frissítése
-        }
-    };
-    xhr.send(JSON.stringify({ name: name, height: parseInt(height, 10) }));
+    fetch(apiUrl + "/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name, height: parseInt(height, 10) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Adat sikeresen frissítve!");
+        fetchData(); // Táblázat frissítése
+    })
+    .catch(error => console.error("Hiba történt az adat frissítésekor:", error));
 }
 
 // Adat törlése
@@ -85,15 +83,18 @@ function deleteData() {
         return;
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("DELETE", apiUrl + "/" + id, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
+    fetch(apiUrl + "/" + id, {
+        method: "DELETE"
+    })
+    .then(response => {
+        if (response.ok) {
             alert("Adat sikeresen törölve!");
             fetchData(); // Táblázat frissítése
+        } else {
+            alert("Hiba történt az adat törlésekor.");
         }
-    };
-    xhr.send();
+    })
+    .catch(error => console.error("Hiba történt az adat törlésekor:", error));
 }
 
 // Input validáció
@@ -107,24 +108,4 @@ function validateInput(name, height) {
         return false;
     }
     return true;
-}
-
-// Statisztikák frissítése
-function updateStatistics(data) {
-    var heights = [];
-    for (var i = 0; i < data.length; i++) {
-        heights.push(data[i].height);
-    }
-
-    var sum = 0;
-    for (var j = 0; j < heights.length; j++) {
-        sum += heights[j];
-    }
-
-    var average = heights.length > 0 ? (sum / heights.length) : 0;
-    var max = heights.length > 0 ? Math.max.apply(null, heights) : 0;
-
-    document.getElementById("sum").innerText = sum;
-    document.getElementById("average").innerText = average.toFixed(2);
-    document.getElementById("max").innerText = max;
 }
