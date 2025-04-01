@@ -1,12 +1,28 @@
 var table = document.getElementById("crudTable").getElementsByTagName("tbody")[0];
 
-function addRow() {
-    var name = document.getElementById("name").value.trim();
-    var age = document.getElementById("age").value.trim();
-    var city = document.getElementById("city").value.trim();
-    var email = document.getElementById("email").value.trim();
+var initialData = [
+    { name: "József", age: 25, city: "Budapest", email: "jozsef@example.com" },
+    { name: "Anna", age: 32, city: "Szeged", email: "anna@example.com" },
+    { name: "Péter", age: 28, city: "Debrecen", email: "peter@example.com" },
+    { name: "Katalin", age: 40, city: "Pécs", email: "katalin@example.com" }
+];
 
-    if (name === "" || age === "" || city === "" || email === "") {
+function populateTable() {
+    table.innerHTML = ""; // Törli a táblázat tartalmát, hogy elkerüljük a duplikációt
+    initialData.forEach(data => addRow(data.name, data.age, data.city, data.email, false));
+}
+
+document.addEventListener("DOMContentLoaded", populateTable);
+
+function addRow(name = null, age = null, city = null, email = null, fromUser = true) {
+    if (fromUser) {
+        name = document.getElementById("name").value.trim();
+        age = document.getElementById("age").value.trim();
+        city = document.getElementById("city").value.trim();
+        email = document.getElementById("email").value.trim();
+    }
+
+    if (!name || !age || !city || !email) {
         alert("Minden mezőt ki kell tölteni!");
         return;
     }
@@ -18,19 +34,21 @@ function addRow() {
 
     var newRow = table.insertRow();
     newRow.innerHTML =
-        "<td>" + name + "</td>" +
-        "<td>" + age + "</td>" +
-        "<td>" + city + "</td>" +
-        "<td>" + email + "</td>" +
-        "<td>" +
-            '<button onclick="editRow(this)">Szerkeszt</button>' +
-            '<button onclick="deleteRow(this)">Törlés</button>' +
-        "</td>";
+        `<td>${name}</td>
+         <td>${age}</td>
+         <td>${city}</td>
+         <td>${email}</td>
+         <td>
+            <button onclick="editRow(this)">Szerkeszt</button>
+            <button onclick="deleteRow(this)">Töröl</button>
+         </td>`;
 
-    document.getElementById("name").value = "";
-    document.getElementById("age").value = "";
-    document.getElementById("city").value = "";
-    document.getElementById("email").value = "";
+    if (fromUser) {
+        document.getElementById("name").value = "";
+        document.getElementById("age").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("email").value = "";
+    }
 }
 
 function editRow(button) {
@@ -67,13 +85,11 @@ function searchTable() {
 
 function sortTable(n) {
     var rows = Array.from(table.getElementsByTagName("tr"));
-    var sortedRows = rows.sort(function (a, b) {
+    var sortedRows = rows.sort((a, b) => {
         var x = a.cells[n].innerText.toLowerCase();
         var y = b.cells[n].innerText.toLowerCase();
         return x.localeCompare(y);
     });
 
-    for (var i = 0; i < sortedRows.length; i++) {
-        table.appendChild(sortedRows[i]);
-    }
+    sortedRows.forEach(row => table.appendChild(row));
 }
