@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hu">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChartJS Diagram</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="chartjs.js" defer></script>
+  </head>
+  <body>
+
+    <header>
+	  <h1>Web-programozás-1 Előadás Házi feladat</h1>
+    </header>
+
+    <nav>
+	  <ul>
+		<li><a href="index.html">Főoldal</a></li>
+		<li><a href="tabla.html">Táblázat</a></li>
+		<li><a href="html5.html">HTML5</a></li>
+		<li><a href="chartjs.html" class="active">ChartJS</a></li>
+		<li><a href="ajax.html">AJAX</a></li>
+		<li><a href="oojs.html">OOJS</a></li>
+	  </ul>
+    </nav>
+
+    <div class="content">
+	  <h2>Táblázat és ChartJS vonaldiagram</h2>
+
+	  <table id="dataTable">
+		<thead>
+		  <tr>
+			<th>Sorszám</th>
+			<th>Érték 1</th>
+			<th>Érték 2</th>
+			<th>Érték 3</th>
+			<th>Érték 4</th>
+			<th>Érték 5</th>
+		  </tr>
+		</thead>
+		<tbody>
+		  <tr>
+			<td>1</td><td>4</td><td>12</td><td>4</td><td>56</td><td>31</td>
+		  </tr>
+		  <tr>
+			<td>2</td><td>32</td><td>5</td><td>24</td><td>12</td><td>8</td>
+		  </tr>
+		  <tr>
+			<td>3</td><td>4</td><td>15</td><td>10</td><td>7</td><td>100</td>
+		  </tr>
+		  <tr>
+			<td>4</td><td>28</td><td>34</td><td>12</td><td>6</td><td>60</td>
+		  </tr>
+		  <tr>
+			<td>5</td><td>8</td><td>6</td><td>28</td><td>67</td><td>36</td>
+		  </tr>
+		</tbody>
+	  </table>
+
+	  <h3>Kiválasztott sor vonaldiagramja:</h3>
+	  <canvas id="chartCanvas" width="400" height="200"></canvas>
+    </div>
+
+    <footer>
+	  <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
+    </footer>
+
+  </body>
+</html>
+

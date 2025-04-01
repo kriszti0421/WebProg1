@@ -1,22 +1,39 @@
-const DiceRoller = () => {
-    const [roll, setRoll] = React.useState(null);
-    const [rollTwo, setRollTwo] = React.useState(null);
+// React és ReactDOM globális elérése
+const React = window.React;
+const ReactDOM = window.ReactDOM;
+const { useState } = React;
 
-    const rollDice = (twoDice = false) => {
-        setRoll(Math.floor(Math.random() * 6) + 1);
-        if (twoDice) setRollTwo(Math.floor(Math.random() * 6) + 1);
-        else setRollTwo(null);
-    };
-
-    return (
-        <div className="container">
-            <h2>Dobókocka Szimulátor</h2>
-            <button onClick={() => rollDice(false)}>1 Kocka Dobása</button>
-            <button onClick={() => rollDice(true)}>2 Kocka Dobása</button>
-            <h3>{roll !== null ? `Dobás: ${roll}` : "Kattints a dobásra!"}</h3>
-            {rollTwo !== null && <h3>Második kocka: {rollTwo}</h3>}
-        </div>
+// Fejléc komponens
+function Header() {
+    return React.createElement("header", null, 
+        React.createElement("h1", null, "React Alkalmazás")
     );
-};
+}
 
-ReactDOM.createRoot(document.getElementById("root")).render(<DiceRoller />);
+// Lábjegyzet komponens
+function Footer() {
+    return React.createElement("footer", null, 
+        React.createElement("p", null, "Készítette: [Te Neved] – NEPTUN: XXXXX")
+    );
+}
+
+// Számláló komponens
+function Counter() {
+    const [count, setCount] = useState(0);
+
+    return React.createElement("div", { style: { textAlign: "center", padding: "20px" } }, 
+        React.createElement(Header),
+        React.createElement("h2", null, "Számláló"),
+        React.createElement("h3", null, count),
+        React.createElement("button", { onClick: () => setCount(count + 1) }, "Növel"),
+        React.createElement("button", { onClick: () => setCount(count - 1) }, "Csökkent"),
+        React.createElement("button", { onClick: () => setCount(0) }, "Nulláz"),
+        React.createElement(Footer)
+    );
+}
+
+// Gyökérelem renderelése (stabilabb módszer)
+ReactDOM.render(
+    React.createElement(Counter),
+    document.getElementById("root")
+);
