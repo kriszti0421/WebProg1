@@ -26,4 +26,5 @@ function Counter() {
     );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(Counter));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(React.createElement(Counter));
