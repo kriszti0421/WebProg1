@@ -1,37 +1,34 @@
-const Calculator = () => {
-    const [num1, setNum1] = React.useState("");
-    const [num2, setNum2] = React.useState("");
-    const [result, setResult] = React.useState(null);
+const { useState } = React;
 
-    const calculate = (operation) => {
-        const n1 = parseFloat(num1);
-        const n2 = parseFloat(num2);
-        if (isNaN(n1) || isNaN(n2)) return;
-        
-        let res = 0;
-        switch (operation) {
-            case "+": res = n1 + n2; break;
-            case "-": res = n1 - n2; break;
-            case "*": res = n1 * n2; break;
-            case "/": res = n2 !== 0 ? n1 / n2 : "Hiba!"; break;
-            default: return;
-        }
-        setResult(res);
-    };
-
-    return (
-        <div className="container">
-            <h2>Számológép</h2>
-            <input type="number" value={num1} onChange={(e) => setNum1(e.target.value)} />
-            <input type="number" value={num2} onChange={(e) => setNum2(e.target.value)} />
-            <br />
-            <button onClick={() => calculate("+")}>+</button>
-            <button onClick={() => calculate("-")}>-</button>
-            <button onClick={() => calculate("*")}>*</button>
-            <button onClick={() => calculate("/")}>/</button>
-            <h3>Eredmény: {result}</h3>
-        </div>
+function Header() {
+    return React.createElement("header", null, 
+        React.createElement("h1", null, "React Alkalmazás")
     );
-};
+}
 
-ReactDOM.createRoot(document.getElementById("root")).render(<Calculator />);
+function Footer() {
+    return React.createElement("footer", null, 
+        React.createElement("p", null, "Készítette: [Te Neved] – NEPTUN: XXXXX")
+    );
+}
+
+function Calculator() {
+    const [num1, setNum1] = useState(0);
+    const [num2, setNum2] = useState(0);
+    const [result, setResult] = useState(0);
+
+    return React.createElement("div", null, 
+        React.createElement(Header),
+        React.createElement("h2", null, "Számológép"),
+        React.createElement("input", { type: "number", value: num1, onChange: e => setNum1(Number(e.target.value)) }),
+        React.createElement("input", { type: "number", value: num2, onChange: e => setNum2(Number(e.target.value)) }),
+        React.createElement("button", { onClick: () => setResult(num1 + num2) }, "Összeadás"),
+        React.createElement("button", { onClick: () => setResult(num1 - num2) }, "Kivonás"),
+        React.createElement("button", { onClick: () => setResult(num1 * num2) }, "Szorzás"),
+        React.createElement("button", { onClick: () => setResult(num2 !== 0 ? num1 / num2 : "Hiba") }, "Osztás"),
+        React.createElement("h3", null, `Eredmény: ${result}`),
+        React.createElement(Footer)
+    );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(Calculator));
