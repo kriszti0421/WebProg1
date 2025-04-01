@@ -1,36 +1,51 @@
-function generateTable() {
-    var table = document.getElementById("chartTable");
-
-    for (var i = 0; i < 5; i++) {
-        var row = table.insertRow();
-        for (var j = 0; j < 5; j++) {
-            var cell = row.insertCell();
-            cell.innerText = Math.floor(Math.random() * 100);
-        }
-    }
-}
-
-function drawChart() {
-    var table = document.getElementById("chartTable");
-    var selectedRow = table.rows[0]; // Első sor alapértelmezett
-    var labels = ["1", "2", "3", "4", "5"];
-    var data = [];
-
-    for (var i = 0; i < selectedRow.cells.length; i++) {
-        data.push(parseInt(selectedRow.cells[i].innerText, 10));
-    }
-
+window.onload = function () {
+    var table = document.getElementById("dataTable");
+    var rows = table.getElementsByTagName("tr");
     var ctx = document.getElementById("chartCanvas").getContext("2d");
-    new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Adatok",
-                data: data,
-                borderColor: "blue",
-                fill: false
-            }]
+    var chart = null;
+
+    function drawChart(data) {
+        var labels = ["Érték 1", "Érték 2", "Érték 3", "Érték 4", "Érték 5"];
+
+        if (chart !== null) {
+            chart.destroy(); // Régi diagram törlése
         }
-    });
-}
+
+        chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Kiválasztott adatsor",
+                    data: data,
+                    borderColor: "blue",
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: false,  // Nem lesz túl nagy
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    function getRowData(row) {
+        var cells = row.getElementsByTagName("td");
+        var data = [];
+        for (var j = 1; j < cells.length; j++) {
+            data.push(parseInt(cells[j].innerHTML, 10));
+        }
+        return data;
+    }
+
+    // Alapértelmezett diagram (első sor adataival)
+    drawChart(getRowData(rows[1]));
+
+    // Táblázatsorok eseménykezelője
+    for (var i = 1; i < rows.length; i++) {
+        rows[i].onclick = function () {
+            drawChart(getRowData(this));
+        };
+    }
+};

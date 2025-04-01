@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     text-align: center;
+    background-color: #f4f4f4;
 }
 
 header {
@@ -23,11 +24,6 @@ nav ul {
     justify-content: center;
 }
 
-nav ul li {
-    margin: 0;
-    padding: 0;
-}
-
 nav ul li a {
     display: block;
     color: white;
@@ -41,6 +37,39 @@ nav ul li a:hover, .active {
 
 .content {
     padding: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+table {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+th {
+    background: #ddd;
+}
+
+tr:hover {
+    background: #f0f0f0;
+}
+
+canvas {
+    width: 100%;
+    max-width: 600px;
+    height: 300px;
+    margin: 20px auto;
 }
 
 footer {
@@ -48,4 +77,5 @@ footer {
     color: white;
     padding: 10px;
     margin-top: 20px;
+    text-align: center;
 }
