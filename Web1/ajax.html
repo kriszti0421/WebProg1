@@ -9,65 +9,65 @@
   </head>
   <body>
     <header>
-	  <h1>Web-programozás-1 Előadás Házi feladat</h1>
+      <h1>Web-programozás-1 Előadás Házi feladat</h1>
     </header>
 
     <nav>
-	  <ul>
-		<li><a href="index.html">Főoldal</a></li>
-		<li><a href="tabla.html">Táblázat</a></li>
-		<li><a href="html5.html">HTML5</a></li>
-		<li><a href="chartjs.html">ChartJS</a></li>
-		<li><a href="ajax.html" class="active">AJAX</a></li>
-		<li><a href="oojs.html">OOJS</a></li>
-	  </ul>
+      <ul>
+        <li><a href="index.html">Főoldal</a></li>
+        <li><a href="tabla.html">Táblázat</a></li>
+        <li><a href="html5.html">HTML5</a></li>
+        <li><a href="chartjs.html">ChartJS</a></li>
+        <li><a href="ajax.html" class="active">AJAX</a></li>
+        <li><a href="oojs.html">OOJS</a></li>
+      </ul>
     </nav>
 
     <div class="content">
-	  <h2>AJAX CRUD műveletek</h2>
+      <h2>AJAX CRUD műveletek</h2>
 
-	  <!-- Adatok megjelenítése -->
-	  <button onclick="fetchData()">Adatok betöltése</button>
-	  <table id="dataTable" border="1">
-		<thead>
-		  <tr>
-			<th>ID</th>
-			<th>Név</th>
-			<th>Magasság</th>
-		  </tr>
-		</thead>
-		<tbody>
-		  <!-- Adatok itt jelennek meg -->
-		</tbody>
-	  </table>
+      <!-- Adatok betöltése -->
+      <button onclick="fetchData()">Adatok betöltése</button>
+      <table id="dataTable" border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Név</th>
+            <th>Magasság</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Adatok itt jelennek meg -->
+        </tbody>
+      </table>
 
-	  <!-- Új adat létrehozása -->
-	  <h3>Új adat létrehozása</h3>
-	  <input type="text" id="newName" placeholder="Név (max. 30 karakter)">
-	  <input type="number" id="newHeight" placeholder="Magasság (szám)">
-	  <button onclick="createData()">Létrehozás</button>
+      <!-- Új adat létrehozása -->
+      <h3>Új adat létrehozása</h3>
+      <input type="text" id="newName" placeholder="Név (max. 30 karakter)">
+      <input type="number" id="newHeight" placeholder="Magasság (szám)">
+      <button onclick="createData()">Létrehozás</button>
 
-	  <!-- Adat frissítése -->
-	  <h3>Adat frissítése</h3>
-	  <input type="number" id="updateId" placeholder="ID">
-	  <input type="text" id="updateName" placeholder="Új név (max. 30 karakter)">
-	  <input type="number" id="updateHeight" placeholder="Új magasság (szám)">
-	  <button onclick="updateData()">Frissítés</button>
+      <!-- Adat frissítése -->
+      <h3>Adat frissítése</h3>
+      <input type="number" id="updateId" placeholder="ID">
+      <input type="text" id="updateName" placeholder="Új név (max. 30 karakter)">
+      <input type="number" id="updateHeight" placeholder="Új magasság (szám)">
+      <button onclick="updateData()">Frissítés</button>
 
-	  <!-- Adat törlése -->
-	  <h3>Adat törlése</h3>
-	  <input type="number" id="deleteId" placeholder="ID">
-	  <button onclick="deleteData()">Törlés</button>
+      <!-- Adat törlése -->
+      <h3>Adat törlése</h3>
+      <input type="number" id="deleteId" placeholder="ID">
+      <button onclick="deleteData()">Törlés</button>
 
-	  <!-- Statisztikák -->
-	  <h3>Statisztikák</h3>
-	  <p>Összeg: <span id="sum"></span></p>
-	  <p>Átlag: <span id="average"></span></p>
-	  <p>Legnagyobb: <span id="max"></span></p>
+      <!-- Statisztikák -->
+      <h3>Statisztikák</h3>
+      <p>Összeg: <span id="sum"></span></p>
+      <p>Átlag: <span id="average"></span></p>
+      <p>Legnagyobb: <span id="max"></span></p>
     </div>
 
     <footer>
-	  <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
+      <p>Készítette: <b>Molnár Máté</b> | Neptun kód: <b>HV1WUV</b></p>
     </footer>
   </body>
 </html>
