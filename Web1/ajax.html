@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="hu">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> <!-- Karakterkódolás beállítása -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AJAX és API</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css"> <!-- Stíluslap hivatkozás -->
     <script src="ajax.js" defer></script>
   </head>
   <body>
@@ -26,8 +26,7 @@
     <div class="content">
       <h2>AJAX CRUD műveletek</h2>
 
-      <!-- Adatok betöltése -->
-      <button onclick="fetchData()">Adatok betöltése</button>
+      <!-- Táblázat -->
       <table id="dataTable" border="1">
         <thead>
           <tr>
@@ -44,20 +43,23 @@
       <!-- Új adat létrehozása -->
       <h3>Új adat létrehozása</h3>
       <input type="text" id="newName" placeholder="Név (max. 30 karakter)">
-      <input type="number" id="newHeight" placeholder="Magasság (szám)">
+      <input type="number" id="newHeight" placeholder="Magasság (100-250)">
       <button onclick="createData()">Létrehozás</button>
 
       <!-- Adat frissítése -->
       <h3>Adat frissítése</h3>
       <input type="number" id="updateId" placeholder="ID">
       <input type="text" id="updateName" placeholder="Új név (max. 30 karakter)">
-      <input type="number" id="updateHeight" placeholder="Új magasság (szám)">
+      <input type="number" id="updateHeight" placeholder="Új magasság (100-250)">
       <button onclick="updateData()">Frissítés</button>
 
       <!-- Adat törlése -->
       <h3>Adat törlése</h3>
       <input type="number" id="deleteId" placeholder="ID">
       <button onclick="deleteData()">Törlés</button>
+
+      <!-- Visszajelzés -->
+      <div id="feedback"></div>
 
       <!-- Statisztikák -->
       <h3>Statisztikák</h3>
