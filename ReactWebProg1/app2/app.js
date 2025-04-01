@@ -1,21 +1,27 @@
+// React és ReactDOM globális elérése
+const React = window.React;
+const ReactDOM = window.ReactDOM;
 const { useState } = React;
 
+// Fejléc komponens
 function Header() {
     return React.createElement("header", null, 
         React.createElement("h1", null, "React Alkalmazás")
     );
 }
 
+// Lábjegyzet komponens
 function Footer() {
     return React.createElement("footer", null, 
         React.createElement("p", null, "Készítette: [Te Neved] – NEPTUN: XXXXX")
     );
 }
 
+// Számláló komponens
 function Counter() {
     const [count, setCount] = useState(0);
 
-    return React.createElement("div", null, 
+    return React.createElement("div", { style: { textAlign: "center", padding: "20px" } }, 
         React.createElement(Header),
         React.createElement("h2", null, "Számláló"),
         React.createElement("h3", null, count),
@@ -26,5 +32,8 @@ function Counter() {
     );
 }
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(React.createElement(Counter));
+// Gyökérelem renderelése (stabilabb módszer)
+ReactDOM.render(
+    React.createElement(Counter),
+    document.getElementById("root")
+);
