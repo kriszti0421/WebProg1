@@ -1,106 +1,130 @@
-// CRUD API URL
-const API_URL = 'http://localhost:3000/api/data';
+var apiUrl = "https://api.example.com/data"; // Az API URL
 
-// Betölti az adatokat és megjeleníti a táblázatban
-async function loadData() {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    
-    let tableBody = document.getElementById("dataTableBody");
-    tableBody.innerHTML = "";
-    data.forEach(item => {
-        let row = `<tr>
-            <td>${item.id}</td>
-            <td>${item.name}</td>
-            <td>${item.height}</td>
-        </tr>`;
-        tableBody.innerHTML += row;
-    });
-    
-    calculateHeightStats(data);
+// Adatok betöltése
+function fetchData() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", apiUrl, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var data = JSON.parse(xhr.responseText);
+            updateTable(data);
+            updateStatistics(data);
+        }
+    };
+    xhr.send();
 }
 
-// Magasság összeg, átlag, maximum számítása
-function calculateHeightStats(data) {
-    if (data.length === 0) return;
-    
-    let sum = data.reduce((acc, item) => acc + item.height, 0);
-    let avg = sum / data.length;
-    let max = Math.max(...data.map(item => item.height));
-    
-    document.getElementById("heightSum").textContent = `Összeg: ${sum}`;
-    document.getElementById("heightAvg").textContent = `Átlag: ${avg.toFixed(2)}`;
-    document.getElementById("heightMax").textContent = `Max: ${max}`;
+// Táblázat frissítése
+function updateTable(data) {
+    var tableBody = document.getElementById("dataTable").getElementsByTagName("tbody")[0];
+    tableBody.innerHTML = ""; // Táblázat kiürítése
+    for (var i = 0; i < data.length; i++) {
+        var row = document.createElement("tr");
+
+        var idCell = document.createElement("td");
+        idCell.innerText = data[i].id;
+        row.appendChild(idCell);
+
+        var nameCell = document.createElement("td");
+        nameCell.innerText = data[i].name;
+        row.appendChild(nameCell);
+
+        var heightCell = document.createElement("td");
+        heightCell.innerText = data[i].height;
+        row.appendChild(heightCell);
+
+        tableBody.appendChild(row);
+    }
 }
 
 // Új adat létrehozása
-async function createData() {
-    let name = document.getElementById("newName").value;
-    let height = parseInt(document.getElementById("newHeight").value);
-    
+function createData() {
+    var name = document.getElementById("newName").value.trim();
+    var height = document.getElementById("newHeight").value.trim();
     if (!validateInput(name, height)) return;
-    
-    await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, height })
-    });
-    
-    loadData();
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", apiUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 201) {
+            alert("Új adat sikeresen létrehozva!");
+            fetchData(); // Táblázat frissítése
+        }
+    };
+    xhr.send(JSON.stringify({ name: name, height: parseInt(height, 10) }));
 }
 
-// Adat módosítása
-async function updateData() {
-    let id = document.getElementById("updateId").value;
-    let name = document.getElementById("newName").value;
-    let height = parseInt(document.getElementById("newHeight").value);
-    
-    if (!validateInput(name, height)) return;
-    
-    await fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, height })
-    });
-    
-    loadData();
+// Adat frissítése
+function updateData() {
+    var id = document.getElementById("updateId").value.trim();
+    var name = document.getElementById("updateName").value.trim();
+    var height = document.getElementById("updateHeight").value.trim();
+    if (!validateInput(name, height) || !id) {
+        alert("Minden mezőt ki kell tölteni!");
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("PUT", apiUrl + "/" + id, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            alert("Adat sikeresen frissítve!");
+            fetchData(); // Táblázat frissítése
+        }
+    };
+    xhr.send(JSON.stringify({ name: name, height: parseInt(height, 10) }));
 }
 
 // Adat törlése
-async function deleteData() {
-    let id = document.getElementById("deleteId").value;
-    
-    await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE'
-    });
-    
-    loadData();
+function deleteData() {
+    var id = document.getElementById("deleteId").value.trim();
+    if (!id) {
+        alert("Az ID mező nem lehet üres!");
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("DELETE", apiUrl + "/" + id, true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            alert("Adat sikeresen törölve!");
+            fetchData(); // Táblázat frissítése
+        }
+    };
+    xhr.send();
 }
 
-// ID alapján betölti az adatokat a mezőkbe (Update-hez)
-function getDataForId() {
-    let id = document.getElementById("updateId").value;
-    fetch(`${API_URL}/${id}`)
-        .then(res => res.json())
-        .then(data => {
-            document.getElementById("newName").value = data.name;
-            document.getElementById("newHeight").value = data.height;
-        })
-        .catch(() => alert("Nincs ilyen ID!"));
-}
-
-// Bevitel ellenőrzése
+// Input validáció
 function validateInput(name, height) {
     if (!name || name.length > 30) {
-        alert("A név nem lehet üres és maximum 30 karakter lehet!");
+        alert("A név mező nem lehet üres és maximum 30 karakter hosszú!");
         return false;
     }
-    if (!height || isNaN(height) || height < 100 || height > 250) {
-        alert("A magasságnak számnak kell lennie (100 és 250 között)!");
+    if (!height || isNaN(height)) {
+        alert("A magasság mező számot kell tartalmazzon!");
         return false;
     }
     return true;
 }
 
-// Betöltés indításkor
-loadData();
+// Statisztikák frissítése
+function updateStatistics(data) {
+    var heights = [];
+    for (var i = 0; i < data.length; i++) {
+        heights.push(data[i].height);
+    }
+
+    var sum = 0;
+    for (var j = 0; j < heights.length; j++) {
+        sum += heights[j];
+    }
+
+    var average = heights.length > 0 ? (sum / heights.length) : 0;
+    var max = heights.length > 0 ? Math.max.apply(null, heights) : 0;
+
+    document.getElementById("sum").innerText = sum;
+    document.getElementById("average").innerText = average.toFixed(2);
+    document.getElementById("max").innerText = max;
+}
